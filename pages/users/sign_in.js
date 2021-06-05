@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFormik } from 'formik'
 import * as Yup from 'yup';
+import { errorHelper } from 'helpers/functions';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -14,7 +15,7 @@ const SignIn = () => {
     const router = useRouter();
 
     const formik = useFormik({
-        initialValues:{email:'francis@gmail.com',password:'testing123'},
+        initialValues:{email:'',password:''},
         validationSchema:Yup.object({
             email:Yup.string()
             .required('Sorry the email is required')
@@ -40,6 +41,7 @@ const SignIn = () => {
                 <h1>{ formType ? 'Register':'Sign in'}</h1>
                 <form className="mt-3" onSubmit={formik.handleSubmit}>
 
+
                     <div className="form-group">
                         <TextField
                             style={{width:'100%'}}
@@ -47,6 +49,7 @@ const SignIn = () => {
                             label="Enter your email"
                             variant="outlined"
                             { ...formik.getFieldProps('email')}
+                            { ...errorHelper(formik,'email')}
                         />
                     </div>
 
@@ -58,6 +61,7 @@ const SignIn = () => {
                             variant="outlined"
                             type="password"
                             { ...formik.getFieldProps('password')}
+                            { ...errorHelper(formik,'password')}
                         />
                     </div>
 
