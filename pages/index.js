@@ -1,9 +1,9 @@
-
+import Featured from 'components/home/featured'
 
 const Home = () => {
   return (
     <>
-        home
+        <Featured/>
     </>
   )
 }
