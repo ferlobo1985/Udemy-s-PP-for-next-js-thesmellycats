@@ -6,3 +6,7 @@ export const userExists = async(email) => {
     if(checkUser) return true;
     return false
 }
+
+export const findUserByEmail = async(email) => {
+    return await User.findOne({email:email});
+}

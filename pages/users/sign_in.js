@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { signIn, getSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFormik } from 'formik'
@@ -31,6 +32,7 @@ const SignIn = () => {
     });
 
     const submitForm = async(values) => {
+        setLoading(true)
 
         if(formType){
             /// register
@@ -38,11 +40,24 @@ const SignIn = () => {
             .then(response => {
                 console.log(response.data)
             }).catch(error=>{
+                setLoading(false);
                 console.log(error)
             })
         } else {
             /// sing in
+            const result = await signIn('credentials',{
+                redirect:false,
+                email: values.email,
+                password: values.password
+            });
 
+            if(result.error){
+                ////
+                setLoading(false);
+                console.log(result.error)
+            } else {
+                console.log(result)
+            }
         }
 
     }
@@ -56,7 +71,9 @@ const SignIn = () => {
     return(
         <div className="container full_vh small top-space">
             
-
+            { loading ?
+                <Loader/>
+                :
             <>
                 <h1>{ formType ? 'Register':'Sign in'}</h1>
                 <form className="mt-3" onSubmit={formik.handleSubmit}>
@@ -113,6 +130,7 @@ const SignIn = () => {
                     </div>
                 </form>
             </>
+            }           
 
         </div>
     )
