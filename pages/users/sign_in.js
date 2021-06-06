@@ -141,4 +141,25 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+export const getServerSideProps = async(context) =>{
+    const session = await getSession({req:context.req});
+
+    if(session){
+        return {
+            redirect:{
+                destination:'/users/dashboard',
+                permanent:false
+            }
+        }
+    }
+
+    return {
+        props:{}
+    }
+
+
+} 
+
+
+
+export default SignIn;
