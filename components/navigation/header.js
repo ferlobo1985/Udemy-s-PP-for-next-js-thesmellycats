@@ -2,10 +2,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { userSignOut } from 'store/actions/user.action';
+
 
 const Header = () => {
-    const [small,setSmall] = useState(false)
+    const [small,setSmall] = useState(false);
+    const user = useSelector(state => state.user);
     const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         if(typeof window !== "undefined"){
@@ -14,6 +19,12 @@ const Header = () => {
             );
         }
     },[])
+
+    const signOutUser = () => {
+        dispatch(userSignOut('So soon?? Bye !!'));
+        router.push('/');
+    }
+
 
     return(
         <nav className={`navbar navbar-expand-lg navbar-light fixed-top py-3 ${ small ? "navbar-shrink":""}`} id="mainNav">
@@ -36,26 +47,31 @@ const Header = () => {
                             </Link>
                         </li>
 
-
-                        <li className="nav-item">
-                            <Link href="/users/sign_in">
-                                <a className="nav-link">Sign in</a>
-                            </Link>
-                        </li>
-
-                        <>
+                        { user && !user.auth ?
                             <li className="nav-item">
-                                <Link href="/users/dashboard">
-                                    <a className="nav-link">Dashboard</a>
+                                <Link href="/users/sign_in">
+                                    <a className="nav-link">Sign in</a>
                                 </Link>
                             </li>
+                        :null
+                        }
+                      
+                        { user && user.auth ?
+                            <>
+                                <li className="nav-item">
+                                    <Link href="/users/dashboard">
+                                        <a className="nav-link">Dashboard</a>
+                                    </Link>
+                                </li>
 
-                            <li className="nav-item">
-                                <a className="nav-link"
-                                    onClick={()=> alert('sign out')}
-                                >Sign out</a>
-                            </li>
-                        </>
+                                <li className="nav-item">
+                                    <a className="nav-link"
+                                        onClick={signOutUser}
+                                    >Sign out</a>
+                                </li>
+                            </>
+                        :null}
+                       
                     </ul>
                 </div>
             </div>
