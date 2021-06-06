@@ -10,3 +10,9 @@ export const userExists = async(email) => {
 export const findUserByEmail = async(email) => {
     return await User.findOne({email:email});
 }
+
+export const findUserById = async(id) => {
+    const user = await User.findById(id).select({"password":0})
+    if(!user) throw new Error('No user found');
+    return user;
+}
