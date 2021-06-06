@@ -29,6 +29,28 @@ export const signInUser = (session,router) => {
     }
 }
 
+export const autoSignIn = (session ) => {
+    return async(dispatch)=>{
+        try {
+            const user = await axios.get('/api/users');
+            dispatch({
+                type:type.SIGN_IN,
+                payload:{
+                    data:{
+                        _id: session.user._id,
+                        email:session.user.email,
+                        role:session.user.role,
+                        firstname: user.data.firstname,
+                        lastname:  user.data.lastname,
+                    },
+                    auth:true
+                }
+            });
+        } catch(error){
+            dispatch(errorDispatcher('Something wrong'))
+        }
+    }
+}
 
 
 export const registerUser = (values, data, router ) => {
