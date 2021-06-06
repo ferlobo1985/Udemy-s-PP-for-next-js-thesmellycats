@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { errorDispatcher } from 'store/actions/notifications.action';
+import { signInUser } from 'store/actions/user.action';
 
 const SignIn = () => {
     const [formType,setFormType] = useState(false);
@@ -58,7 +59,8 @@ const SignIn = () => {
                 setLoading(false);
                 dispatch(errorDispatcher(result.error))
             } else {
-                console.log(result)
+                const session = await getSession();
+                dispatch(signInUser(session,router))
             }
         }
 

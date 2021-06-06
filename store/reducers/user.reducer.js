@@ -13,6 +13,8 @@ let DEFAULT_USER_STATE = {
 
 export default function usersReducer(state=DEFAULT_USER_STATE,action){
     switch(action.type){
+        case type.SIGN_IN:
+            return { ...state, data: action.payload.data,auth:action.payload.auth}
         default:
             return state;
     }
