@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { errorDispatcher } from 'store/actions/notifications.action';
-import { signInUser } from 'store/actions/user.action';
+import { signInUser, registerUser } from 'store/actions/user.action';
 
 const SignIn = () => {
     const [formType,setFormType] = useState(false);
@@ -42,6 +42,7 @@ const SignIn = () => {
             /// register
             axios.post('/api/auth/register',values)
             .then(response => {
+                dispatch(registerUser(values,response.data,router))
                 console.log(response.data)
             }).catch(error=>{
                 setLoading(false);
