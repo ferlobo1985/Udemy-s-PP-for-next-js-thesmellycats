@@ -21,20 +21,28 @@ const handler = async(req,res) => {
         const hashedPass =  await passwordHash(password)
 
         try{
-
-
-
-            res.status(200).json({email,hashedPass,ok:'ok'})
+            const user = new User({
+                email,
+                password:hashedPass
+            });
+            await user.save();
+            res.status(200).json({
+                message:'Registered successfully',
+                user:{
+                    _id: user._id,
+                    email: user.email,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    role:user.role
+                }
+            })
         } catch(error){
-
+            res.status(500).json({
+                message:'Error adding user to the db',
+                error: error.errors
+            })
         }
-
-
-     
-
     }
-
-
 }
 
 

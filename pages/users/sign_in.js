@@ -19,9 +19,9 @@ const SignIn = () => {
     const formik = useFormik({
         initialValues:{email:'francis@gmail.com',password:'testing123'},
         validationSchema:Yup.object({
-            email:Yup.string()
-            .required('Sorry the email is required')
-            .email('This is no a valid email'),
+            // email:Yup.string()
+            // .required('Sorry the email is required')
+            // .email('This is no a valid email'),
             password:Yup.string()
             .required('Sorry, the password is required')
         }),
