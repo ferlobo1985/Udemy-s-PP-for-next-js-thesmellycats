@@ -25,7 +25,7 @@ const RouterGuard = (props) => {
 
     return(
         <>
-            {props.childres}
+            {props.children}
         </>
     )
 
