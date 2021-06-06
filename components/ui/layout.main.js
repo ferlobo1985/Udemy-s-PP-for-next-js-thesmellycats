@@ -8,7 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux';
+import { clearNotification } from 'store/actions/notifications.action';
 
 
 const MainLayout = (props) => {
@@ -19,12 +20,13 @@ const MainLayout = (props) => {
         if(notifications && notifications.error){
             const msg = notifications.msg ? notifications.msg : 'Error';
             showToast('ERROR',msg);
-            dispatch()
+            dispatch(clearNotification());
         }
     
         if(notifications && notifications.success){
             const msg = notifications.msg ? notifications.msg : 'Good job!!';
             showToast('SUCCESS',msg);
+            dispatch(clearNotification());
         }
 
     },[notifications,dispatch])

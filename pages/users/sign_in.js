@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { successDispatcher } from 'store/actions/notifications.action';
+import { errorDispatcher } from 'store/actions/notifications.action';
 
 const SignIn = () => {
     const [formType,setFormType] = useState(false);
@@ -44,7 +44,7 @@ const SignIn = () => {
                 console.log(response.data)
             }).catch(error=>{
                 setLoading(false);
-                console.log(error)
+                dispatch(errorDispatcher(error.response.data.message))
             })
         } else {
             /// sing in
@@ -55,13 +55,10 @@ const SignIn = () => {
             });
 
             if(result.error){
-                ////
                 setLoading(false);
-                console.log(result.error)
+                dispatch(errorDispatcher(result.error))
             } else {
                 console.log(result)
-                dispatch(successDispatcher('GOOD JOB!!'))
-                // successDispatcher
             }
         }
 
