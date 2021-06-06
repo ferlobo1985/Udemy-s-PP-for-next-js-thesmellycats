@@ -1,8 +1,10 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFormik } from 'formik'
 import * as Yup from 'yup';
 import { errorHelper } from 'helpers/functions';
+const Loader = dynamic(()=> import('helpers/loader'));
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -15,7 +17,7 @@ const SignIn = () => {
     const router = useRouter();
 
     const formik = useFormik({
-        initialValues:{email:'',password:''},
+        initialValues:{email:'francis@gmail.com',password:'testing123'},
         validationSchema:Yup.object({
             email:Yup.string()
             .required('Sorry the email is required')
@@ -24,9 +26,27 @@ const SignIn = () => {
             .required('Sorry, the password is required')
         }),
         onSubmit:(values)=>{
-            console.log(values)
+           submitForm(values)
         }
     });
+
+    const submitForm = async(values) => {
+
+        if(formType){
+            /// register
+            axios.post('/api/auth/register',values)
+            .then(response => {
+                console.log(response.data)
+            }).catch(error=>{
+                console.log(error)
+            })
+        } else {
+            /// sing in
+
+        }
+
+    }
+
 
     const handleFormType = () => {
         setFormType(!formType);
