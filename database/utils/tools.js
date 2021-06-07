@@ -24,8 +24,6 @@ export const validateBody = async(validation, data) => {
 export const checkRole = async(req, rights)=>{
     const action = rights[0]; /// createANy, READANY
     const resource = rights[1] /// shows, profile, users
-
-    console.log(req.session)
     
     const permission = roles.can(req.session.user.role)[action](resource);
     if(!permission.granted){
