@@ -23,3 +23,8 @@ export const showToast = (type,msg) => {
     }
 
 }
+
+
+export const toJson = (value) => {
+    return JSON.parse(JSON.stringify(value));
+}

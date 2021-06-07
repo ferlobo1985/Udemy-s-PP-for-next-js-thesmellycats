@@ -17,6 +17,7 @@
     "formidable": "^1.2.2",
     "formik": "^2.2.9",
     "mongoose": "^5.12.13",
+    "mongoose-aggregate-paginate-v2": "^1.0.42",
     "next": "10.2.3",
     "next-auth": "^3.25.0",
     "next-connect": "^0.10.1",
