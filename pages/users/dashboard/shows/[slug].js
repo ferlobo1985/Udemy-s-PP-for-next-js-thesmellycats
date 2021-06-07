@@ -47,18 +47,18 @@ const CreatShowPage = ({show}) => {
    validationSchema: showValidation,
     onSubmit: (values, { resetForm }) => {
         setLoading(true)
-       
+        
         axios
-        .post("/api/shows/add_show",values)
+        .patch("/api/shows/edit",values)
         .then(response =>{
-            dispatch(successDispatcher('Done congrats !!'));
-            clearRef.current.clearPic();
-            resetForm();
-        }).catch(error=>{
-            dispatch(errorDispatcher(error.response.data.message));
+            dispatch(successDispatcher('Edited !!'))
+        }).catch(error => {
+            dispatch(errorDispatcher(error.response.data.message))
         }).finally(()=>{
             setLoading(false)
-        });
+        })
+      
+
     },
   });
 

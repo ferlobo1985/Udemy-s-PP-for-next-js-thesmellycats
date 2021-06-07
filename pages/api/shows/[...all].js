@@ -3,7 +3,7 @@ import checkAuth from 'database/middleware/checkauth'
 import connectToDb from 'database/db';
 import { checkRole } from 'database/utils/tools'
 
-import { addShow,paginateShows,removeById } from 'database/services/show.service';
+import { addShow,paginateShows,removeById, updateBySlug } from 'database/services/show.service';
 
 
 const handler = nc();
@@ -66,6 +66,29 @@ handler.delete(
         }
     }
 )
+
+
+handler.patch(
+    "/api/shows/edit",
+    checkAuth,
+    async(req,res) =>{
+        try {
+            await connectToDb();
+               /// permission
+               const permission = await checkRole(req,['updateAny','shows']);
+               if(!permission){
+                   return res.status(401).json({message:'Unauthorized'})
+               }
+
+               const slug = req.body.slug;
+               const show = await updateBySlug(slug,req.body);
+               res.status(200).json(show);
+        } catch(error){
+            res.status(400).json({message:error.message});
+        }
+    }
+)
+
 
 
 
