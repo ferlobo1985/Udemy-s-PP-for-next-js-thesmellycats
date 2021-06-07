@@ -33,7 +33,7 @@ const CreatShowPage = () => {
       date: "",
       time: "",
     },
-    validationSchema: showValidation,
+   validationSchema: showValidation,
     onSubmit: (values, { resetForm }) => {
         setLoading(true)
        

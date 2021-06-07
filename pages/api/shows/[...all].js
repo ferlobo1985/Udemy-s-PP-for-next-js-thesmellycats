@@ -1,8 +1,9 @@
 import nc from 'next-connect';
 import checkAuth from 'database/middleware/checkauth'
 import connectToDb from 'database/db';
+import { checkRole } from 'database/utils/tools'
 
-import { addShow } from 'database/services/show.service'
+import { addShow } from 'database/services/show.service';
 
 
 const handler = nc();
@@ -14,7 +15,13 @@ handler.post(
     async(req,res)=>{
         try{
             await connectToDb();
-            ///  permission
+            
+            /// permission
+            const permission = await checkRole(req,['createAny','shows']);
+            if(!permission){
+                return res.status(401).json({message:'Unauthorized'})
+            }
+
             const show = await addShow(req)
             res.status(200).json({show})
         }catch(error){
