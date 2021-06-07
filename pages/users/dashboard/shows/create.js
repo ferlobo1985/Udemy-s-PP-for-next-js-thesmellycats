@@ -14,8 +14,13 @@ import {
   successDispatcher,
   errorDispatcher,
 } from "store/actions/notifications.action";
+import axios from "axios";
 
 const CreatShowPage = () => {
+    const [loading,setLoading] = useState(false);
+    const dispatch = useDispatch();
+
+
   const formik = useFormik({
     initialValues: {
       slug: "",
@@ -30,7 +35,19 @@ const CreatShowPage = () => {
     },
     validationSchema: showValidation,
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+        setLoading(true)
+       
+        axios
+        .post("/api/shows/add_show",values)
+        .then(response =>{
+            dispatch(successDispatcher('Done congrats !!'));
+            resetForm();
+            console.log(response.data)
+        }).catch(error=>{
+            dispatch(errorDispatcher(error.response.data.message));
+        }).finally(()=>{
+            setLoading(false)
+        });
     },
   });
 
@@ -88,32 +105,32 @@ const CreatShowPage = () => {
         <Divider className="mt-3 mb-3" />
 
         <div className="form-group">
-        <TextField
-          className="date-time-field mr-3"
-          name="excerpt"
-          label="Date of the event"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...formik.getFieldProps("date")}
-          {...errorHelper(formik, "date")}
-        />
+          <TextField
+            className="date-time-field mr-3"
+            name="excerpt"
+            label="Date of the event"
+            type="date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            {...formik.getFieldProps("date")}
+            {...errorHelper(formik, "date")}
+          />
 
-        <TextField
-          className="date-time-field"
-          name="time"
-          label="Start time"
-          type="time"
-          InputLabelProps={{ shrink: true }}
-          InputProps={{ steps:300 }}
-          {...formik.getFieldProps("time")}
-          {...errorHelper(formik, "time")}
-        />
+          <TextField
+            className="date-time-field"
+            name="time"
+            label="Start time"
+            type="time"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ steps: 300 }}
+            {...formik.getFieldProps("time")}
+            {...errorHelper(formik, "time")}
+          />
         </div>
 
         <Divider className="mt-3 mb-3" />
-        
+
         <div className="form-group">
           <TextField
             style={{ width: "100%" }}
@@ -126,7 +143,6 @@ const CreatShowPage = () => {
         </div>
 
         <Divider className="mt-3 mb-3" />
-        
 
         <div className="form-group">
           <TextField
@@ -139,6 +155,15 @@ const CreatShowPage = () => {
           />
         </div>
 
+        {loading ?
+        <CircularProgress color="secondary" className="mt-3"/>
+            :
+        <Button variant="contained" color="primary" type="submit">
+            Create Show
+        </Button>
+        }
+
+            
       </form>
     </LayoutAdmin>
   );
