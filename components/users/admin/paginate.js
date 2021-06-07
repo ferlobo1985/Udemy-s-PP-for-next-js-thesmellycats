@@ -21,6 +21,10 @@ const PaginateBlock = ({
         next(page)
     }
 
+    const goToEdit = (slug) => {
+        router.push(`/users/dashboard/shows/${slug}`)
+    }
+
 
 
     return(
@@ -45,7 +49,7 @@ const PaginateBlock = ({
                             >Remove</td>
                             <td
                                 className="action_btn edit_btn"
-                                onClick={()=>alert('go to edit')}
+                                onClick={()=> goToEdit(show.slug)}
                             >Edit</td>
                         </tr>
                     ))}

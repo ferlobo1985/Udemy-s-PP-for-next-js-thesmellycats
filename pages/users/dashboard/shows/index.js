@@ -54,8 +54,9 @@ const ShowsAdmin =({shows}) => {
                 id:toRemove
             }
         }).then( response => {
-            
-
+            getShows({page:currentPage,limit});
+            dispatch(successDispatcher('Removed !!!'))
+            handleClose()
         }).catch(error=>{
             dispatch(errorDispatcher(error.response.data.message))
         })
