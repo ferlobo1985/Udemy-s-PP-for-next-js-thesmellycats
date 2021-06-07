@@ -9,3 +9,14 @@ export const passwordCheck = async(password,hashedPassword)=>{
     const valid = await compare(password,hashedPassword);
     return valid;
 }
+
+
+export const validateBody = async(validation, data) => {
+    try {
+        await validation.validate(data,{ abortEarly:false});
+        return true
+    } catch(error){
+        return false;
+    }
+    
+}
