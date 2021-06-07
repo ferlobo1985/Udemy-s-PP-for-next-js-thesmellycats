@@ -7,24 +7,60 @@ import axios from 'axios';
 
 import PaginateBlock from 'components/users/admin/paginate';
 
+import { useDispatch } from 'react-redux';
+import { successDispatcher, errorDispatcher } from 'store/actions/notifications.action';
+
 
 const ShowsAdmin =({shows}) => {
+    const dispatch = useDispatch()
     const limit = 2;
     const [showsPag,setShowsPag] = useState(shows);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const [removeModal,setRemoveModal] = useState(false);
+    const [toRemove,setToRemove] = useState(null);
 
 
     ////
     const gotoPage = (page) => {
-        getShows({page:page,limit})
+        getShows({page:page,limit});
+        setCurrentPage(page);
     }
 
     const getShows = (values) => {
         axios.post('/api/shows/paginate',values)
         .then( response => {
-            console.log(response)
+            setShowsPag(response.data)
         }).catch(error=>{
-            console.log(error)
+            dispatch(errorDispatcher(error.response.data.message))
         })
+    }
+
+
+    const handleClose = () => {
+      setToRemove('');
+      setRemoveModal(false)
+    }
+
+    const handleModal = (id) => {
+        setToRemove(id);
+        setRemoveModal(true)
+    }
+
+
+    const handleRemove = () => {
+        axios.delete('/api/shows/remove',{
+            data:{
+                id:toRemove
+            }
+        }).then( response => {
+            
+
+        }).catch(error=>{
+            dispatch(errorDispatcher(error.response.data.message))
+        })
+
+
     }
 
 
@@ -36,7 +72,10 @@ const ShowsAdmin =({shows}) => {
                     prev={(page)=> gotoPage(page)}
                     next={(page)=> gotoPage(page)}
 
-
+                    removeModal={removeModal}
+                    handleClose={()=>handleClose()}
+                    handleModal={(id)=> handleModal(id)}
+                    handleRemove={()=> handleRemove()}
                 />
             </div>
         </LayoutAdmin>
@@ -45,7 +84,7 @@ const ShowsAdmin =({shows}) => {
 
 export const getServerSideProps = async() => {
     await connectToDb();
-    const shows = await paginateShows(2,2);
+    const shows = await paginateShows(1,2);
 
     if(!shows) {
         return {
