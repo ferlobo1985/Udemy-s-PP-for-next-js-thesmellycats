@@ -1,17 +1,22 @@
+import { useState } from 'react';
 import LayoutAdmin from 'components/ui/layout.admin';
 import connectToDb from 'database/db';
 import { paginateShows } from 'database/services/show.service';
 import { toJson } from 'helpers/functions';
 
-const  ShowsAdmin =(props) => {
+import PaginateBlock from 'components/users/admin/paginate';
 
-    console.log(props)
 
+const ShowsAdmin =({shows}) => {
+    const [showsPag,setShowsPag] = useState(shows);
 
     return(
         <LayoutAdmin title="Shows">
-            hello
-
+            <div className="shows_table">
+                <PaginateBlock 
+                    shows={showsPag}
+                />
+            </div>
         </LayoutAdmin>
     )
 }
@@ -21,12 +26,16 @@ export const getServerSideProps = async() => {
     const shows = await paginateShows(1,2);
 
     if(!shows) {
-        return { notFound: true}
+        return {
+            props:{
+                shows:[]
+            }
+        }
     }
  
     return {
         props:{
-            show: toJson(shows)
+            shows: toJson(shows)
         }
     }
 
