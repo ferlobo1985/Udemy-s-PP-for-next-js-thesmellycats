@@ -24,8 +24,6 @@ const UploadHandler = (props) => {
         } catch(error){
             console.log(error)
         }
-
-
     }
 
 

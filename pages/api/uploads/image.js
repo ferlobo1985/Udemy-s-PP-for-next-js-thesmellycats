@@ -1,9 +1,20 @@
 import formidable from 'formidable';
+import fs from 'fs';
 
 export const config = {
     api:{
         bodyParser:false
     }
+}
+
+
+const saveFile = async(file) => {
+    const data = fs.readFileSync(file.path);
+    const newFileName = Date.now() + '-' + file.name;
+
+    fs.writeFileSync(`./public/images/venues/${newFileName}`,data)
+    fs.unlinkSync(file.path);
+    return newFileName;
 }
 
 
@@ -13,18 +24,12 @@ const Handler = async(req,res) => {
 
         form.parse(req, async function(err,fields,files){
             try {
-                /// store files server
-                console.log(files)
-                console.log(files.file)
-
+                const upload = await saveFile(files.file);
+                return res.status(201).json({message:'ok',filename: upload})
             } catch(error){
                 return res.status(400).json({errors:error})
             }
-
-
         })
-
-
     }
 }
 

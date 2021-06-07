@@ -10,6 +10,7 @@ handler
 .use(checkAuth)
 .get(async(req,res)=>{
     try{
+        await connectToDb();
         const user = await findUserById(req.session.user._id)
         res.status(200).json(user);
     } catch(error){
