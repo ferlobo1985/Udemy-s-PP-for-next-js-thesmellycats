@@ -39,7 +39,6 @@ const ShowsPage = (props) => {
         })
     }
 
-
     return(
         <div className="container page_container">
             <Masonry
