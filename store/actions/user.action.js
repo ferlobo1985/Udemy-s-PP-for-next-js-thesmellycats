@@ -89,3 +89,17 @@ export const userSignOut = (msg) => {
         })
     }
 }
+
+
+export const updateUserprofile = (user) => {
+    return async(dispatch)=>{
+        dispatch(successDispatcher('Udpated !!!'))
+        dispatch({
+            type:type.UPD_USER,
+            payload:{
+                firstname: user.firstname,
+                lastname: user.lastname
+            }
+        })
+    }
+}

@@ -10,7 +10,8 @@ import Button from "@material-ui/core/Button";
 import { errorHelper } from "helpers/functions";
 
 import { useDispatch, useSelector } from "react-redux";
-import  {errorDispatcher} from 'store/actions/notifications.action'
+import { errorDispatcher } from 'store/actions/notifications.action';
+import { updateUserprofile } from 'store/actions/user.action';
 
 const UserProfile = () => {
   const user = useSelector((state) => state.user);
@@ -36,7 +37,7 @@ const UserProfile = () => {
       
       axios.patch('/api/users',values)
       .then( response => {
-        console.log(response.data)
+        dispatch(updateUserprofile(response.data))
       }).catch(error=>{
           console.log(error)
         dispatch(errorDispatcher('Sorry try again'))
