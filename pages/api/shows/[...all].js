@@ -3,7 +3,13 @@ import checkAuth from 'database/middleware/checkauth'
 import connectToDb from 'database/db';
 import { checkRole } from 'database/utils/tools'
 
-import { addShow,paginateShows,removeById, updateBySlug } from 'database/services/show.service';
+import { 
+    addShow,
+    paginateShows,
+    removeById, 
+    updateBySlug,
+    getAllShows 
+} from 'database/services/show.service';
 
 
 const handler = nc();
@@ -90,6 +96,25 @@ handler.patch(
 )
 
 
+
+
+handler.get(
+    "/api/shows/getAll",
+    async(req,res)=>{
+        try {
+            await connectToDb();
+            const sortBy = req.query.sort ? req.query.sort : '_id';
+            const order = req.query.order ? req.query.order : 'desc';
+            const limit = req.query.limit ? req.query.limit : '10';
+            const skip = req.query.skip ? req.query.skip : '0';
+
+            const shows = await getAllShows(sortBy,order,limit,skip);
+            res.status(200).json({shows:shows})
+        } catch(error){
+            res.status(400).json({message:'Try again later',error:error})
+        }
+
+})
 
 
 export default handler;
