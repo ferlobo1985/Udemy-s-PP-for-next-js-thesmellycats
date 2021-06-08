@@ -9,3 +9,43 @@ let transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 })
+
+
+
+export const contactEmail = async(data) => {
+    try{
+        let mailGenerator = new Mailgen({
+            theme:"default",
+            product:{
+                name:"Smelly cats",
+                link: "http://smelly_cats.com"
+            }
+        });
+
+        const email = {
+            body:{
+                name:'Admin',
+                intro:[
+                    'Hey !! someone contacted you from our app',
+                    `From:  ${data.email}`,
+                    `Name:  ${data.name}`,
+                    `Message:  ${data.message}`
+                ],
+                outro:'Bye !!'
+            }
+        }
+
+        let emailBody = mailGenerator.generate(email);
+        let message = {
+            from:'the.coding.rev@gmail.com',
+            to: 'the.coding.rev@gmail.com',
+            subject:"Contacted received",
+            html:emailBody
+        };
+
+        await transporter.sendMail(message);
+        return true;
+    } catch(error){
+        throw error;
+    }
+}
