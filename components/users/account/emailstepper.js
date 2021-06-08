@@ -49,17 +49,20 @@ const EmailStepper = () => {
             })
         }),
         onSubmit: (values) => {
-          
-            console.log(values)
+            setLoading(true);
 
-        //   axios.patch('/api/users',values)
-        //   .then( response => {
-        //     dispatch(updateUserprofile(response.data))
-        //   }).catch(error=>{
-        //       console.log(error)
-        //     dispatch(errorDispatcher('Sorry try again'))
-        //   })
-    
+
+          axios.patch('/api/users',{
+              email:values.newemail
+          })
+          .then( response => {
+            dispatch(userSignOut('Done !! Log it again with your new email'));
+            router.push('/');
+          }).catch(error=>{
+            dispatch(errorDispatcher(error.response.data.message));
+            setActiveStep(1);
+            setLoading(false);
+          })
         },
       });
 
@@ -75,13 +78,13 @@ const EmailStepper = () => {
         }
 
     const nextBtn = () => (
-        <Button className="mt-3" variant="container" color="primary" onClick={handleNext} >
+        <Button className="mt-3" variant="contained" color="primary" onClick={handleNext} >
             Next
         </Button>
     )
 
     const backsBtn = () => (
-        <Button className="mt-3 ml-2" variant="container" onClick={handleBack} >
+        <Button className="mt-3 ml-2" variant="contained" onClick={handleBack} >
             Back
         </Button>
     )
