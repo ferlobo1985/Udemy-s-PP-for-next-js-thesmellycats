@@ -23,7 +23,6 @@ export const addShow = async(req) => {
     }
 }
 
-
 export const paginateShows = async(page,limit) => {
     try {
         const options = {
@@ -70,6 +69,22 @@ export const updateBySlug = async(slug,body) => {
         if(!show) throw new Error('No show found');
         return show;
     }catch(error){
+        throw error
+    }
+}
+
+
+export const getAllShows = async(sortyBy,order,limit,skip) => {
+    try{
+        const shows = await Show.find({})
+        .sort([
+            [sortyBy,order]
+        ])
+        .skip(parseInt(skip))
+        .limit(parseInt(limit))
+
+        return shows;
+    } catch(error){
         throw error
     }
 }
