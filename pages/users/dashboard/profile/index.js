@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { errorDispatcher } from 'store/actions/notifications.action';
 import { updateUserprofile } from 'store/actions/user.action';
 
+const EmailStepper = dynamic(()=> import('components/users/account/emailstepper'))
+
 const UserProfile = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -84,6 +86,7 @@ const UserProfile = () => {
           Edit profile
         </Button>
       </form>
+      <EmailStepper/>
     </LayoutAdmin>
   );
 };
