@@ -18,6 +18,7 @@ import {
 import axios from "axios";
 
 ////////// EDIT ///////
+import { useRouter } from 'next/router'
 import connectToDb from 'database/db';
 import { getBySlug } from 'database/services/show.service';
 import { toJson } from 'helpers/functions'
@@ -25,6 +26,7 @@ import { toJson } from 'helpers/functions'
 
 
 const CreatShowPage = ({show}) => {
+    const router = useRouter();
     const [loading,setLoading] = useState(false);
     const dispatch = useDispatch();
     const clearRef = useRef();
@@ -49,16 +51,20 @@ const CreatShowPage = ({show}) => {
         setLoading(true)
         
         axios
-        .patch("/api/shows/edit",values)
+        .patch("/api/shows/edit",{ 
+            data:values,
+            current:show.slug
+        })
         .then(response =>{
+            if(response.data.slug !== router.query.slug){
+                router.push(`/users/dashboard/shows/${response.data.slug}`)
+            }
             dispatch(successDispatcher('Edited !!'))
         }).catch(error => {
             dispatch(errorDispatcher(error.response.data.message))
         }).finally(()=>{
             setLoading(false)
-        })
-      
-
+        });
     },
   });
 

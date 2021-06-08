@@ -80,8 +80,8 @@ handler.patch(
                    return res.status(401).json({message:'Unauthorized'})
                }
 
-               const slug = req.body.slug;
-               const show = await updateBySlug(slug,req.body);
+               const slug = req.body.current;
+               const show = await updateBySlug(slug,req.body.data);
                res.status(200).json(show);
         } catch(error){
             res.status(400).json({message:error.message});
