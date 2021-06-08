@@ -29,9 +29,18 @@ const Contact = () => {
             .required('Sorry the message is required'),
         }),
         onSubmit:(values,{resetForm})=>{
-            //setLoading(true)
-            
-        
+            setLoading(true);
+
+            axios.post('/api/email/contact',values)
+            .then(response => {
+                resetForm();
+                dispatch(successDispatcher('Thank you !!'))
+            }).catch(error=>{
+                dispatch(errorDispatcher('Oops try again later'))
+            }).finally(()=>{
+                setLoading(false);
+            })
+
         }
     });
 

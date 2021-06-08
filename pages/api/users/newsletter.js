@@ -1,11 +1,12 @@
 import nc from 'next-connect';
 import Newsletter from 'database/models/newsletter.model';
-
+import connectToDb from 'database/db'
 
 const handler = nc();
 
 handler
 .post( async(req,res)=>{
+    await connectToDb();
     try{
         const email = await Newsletter.findOne({email:req.body.email});
         if(email){
