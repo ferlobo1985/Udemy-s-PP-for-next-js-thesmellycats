@@ -23,7 +23,18 @@ const Newsletter = () => {
             .email('This is an invalid email')
         }),
         onSubmit:(values,{resetForm})=>{
-            console.log(values)
+            setLoading(true)
+            
+            axios.post(`/api/users/newsletter`,values)
+            .then(response => {
+                dispatch(successDispatcher('Thank you'))
+            }).catch(error=>{
+                dispatch(errorDispatcher(error.response.data.message))
+            }).finally(()=>{
+                resetForm();
+                setLoading(false)
+            });
+
         }
     })
 
